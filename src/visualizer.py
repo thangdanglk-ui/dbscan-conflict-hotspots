@@ -116,9 +116,17 @@ def export_interactive_map_folium(csv_path, labels, output_html=None, max_points
         output_html = os.path.join(BASE_DIR, "outputs", "maps", "conflict_hotspots.html")
 
     data_records = []
-    with open(csv_path, 'r', encoding='utf-8', errors='ignore') as f:
+    if csv_path.startswith(('http://', 'https://')):
+        import urllib.request
+        req = urllib.request.Request(csv_path, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req) as resp:
+            lines = [line.decode('utf-8', errors='ignore') for line in resp.readlines()]
+        reader = csv.DictReader(lines)
+    else:
+        f = open(csv_path, 'r', encoding='utf-8', errors='ignore')
         reader = csv.DictReader(f)
-        for i, row in enumerate(reader):
+
+    for i, row in enumerate(reader):
             if i >= len(labels):
                 break
             try:
