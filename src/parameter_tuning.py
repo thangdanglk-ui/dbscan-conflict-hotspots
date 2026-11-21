@@ -29,23 +29,22 @@ def compute_k_distance(coords_rad,k=10):
         else:
             k_distance[i] = distance_sorted[-1]
     return np.sort(k_distance)[::-1]
-def plot_k_distance_elbow(k_dist_rad,chosen_eps_km = 50,save_path = None):
+def plot_k_distance_elbow(k_dist_rad, chosen_eps_km=50, save_path=None):
     if save_path is None:
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         save_path = os.path.join(BASE_DIR, "outputs", "figures", "k_distance_elbow.png")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     k_dist_km = radians_to_km(k_dist_rad)
     chosen_eps_radian = km_to_radians(chosen_eps_km)
-    plt.figure(figsize=(10,8))
-    plt.plot(range(1,len(k_dist_km)+1),k_dist_km,color="black",linewidth=1.5
-             ,label = "Đường cong k-distance")
-    plt.axhline(y=chosen_eps_km,color="red",linestyle="--",linewidth=1.2,
-                label = f"ngưỡng chọn: eps = {chosen_eps_km} km ({chosen_eps_radian:.5f}) rad")
-    plt.title("Biểu đồ k-distance elbow xác định tham số epsilon",fontsize=15,fontweight="bold")
-    plt.xlabel("thứ tự dữ liệu (sắp xếp giảm dần)", fontsize=11)
-    plt.ylabel("khoảng cách tới láng giềng thứ k (km)",fontsize = 11)
-    plt.grid(True,linestyle="--",alpha = 0.5)
-    plt.legend(fontsize = 11)
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, len(k_dist_km) + 1), k_dist_km, color='#1E90FF', linewidth=2.0, label="Đường cong k-distance")
+    plt.axhline(y=chosen_eps_km, color='#FF3333', linestyle='--', linewidth=1.5,
+                label=f"Ngưỡng chọn: eps = {chosen_eps_km} km ({chosen_eps_radian:.5f} rad)")
+    plt.title("Biểu đồ k-distance elbow xác định tham số epsilon", fontsize=14, fontweight="bold")
+    plt.xlabel("Thứ tự dữ liệu (sắp xếp giảm dần)", fontsize=11)
+    plt.ylabel("Khoảng cách tới láng giềng thứ k (km)", fontsize=11)
+    plt.grid(True, linestyle="--", alpha=0.5)
+    plt.legend(fontsize=11)
     plt.tight_layout()
     plt.savefig(save_path, dpi=300)
     plt.close()
