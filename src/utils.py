@@ -23,8 +23,9 @@ def load_and_clean_coordinates(source):
             lines = [line.decode('utf-8', errors='ignore') for line in resp.readlines()]
         reader = csv.reader(lines)
     else:
-        f = open(source, "r", encoding="utf-8", errors="ignore")
-        reader = csv.reader(f)
+        with open(source, "r", encoding="utf-8", errors="ignore") as f:
+            lines = f.readlines()
+        reader = csv.reader(lines)
 
     header = next(reader)
     lat_idx = header.index("latitude")

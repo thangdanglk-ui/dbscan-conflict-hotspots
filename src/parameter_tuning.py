@@ -42,7 +42,7 @@ def plot_k_distance_elbow(k_dist_rad,chosen_eps_km = 50,save_path = None):
     plt.axhline(y=chosen_eps_km,color="red",linestyle="--",linewidth=1.2,
                 label = f"ngưỡng chọn: eps = {chosen_eps_km} km ({chosen_eps_radian:.5f}) rad")
     plt.title("Biểu đồ k-distance elbow xác định tham số epsilon",fontsize=15,fontweight="bold")
-    plt.xlabel("thứ tự dữ liệu (sắp xếp giảm dần",fontsize = 11)
+    plt.xlabel("thứ tự dữ liệu (sắp xếp giảm dần)", fontsize=11)
     plt.ylabel("khoảng cách tới láng giềng thứ k (km)",fontsize = 11)
     plt.grid(True,linestyle="--",alpha = 0.5)
     plt.legend(fontsize = 11)
@@ -51,10 +51,11 @@ def plot_k_distance_elbow(k_dist_rad,chosen_eps_km = 50,save_path = None):
     plt.close()
     print(f"Đã xuất đồ thị k-distance tại: {save_path}")
 
-if __name__=="__main__":
+if __name__ == "__main__":
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     output_fig_path = os.path.join(BASE_DIR, "outputs", "figures", "k_distance_elbow.png")
-    coords = load_and_clean_coordinates(r"C:\Users\Admin\PycharmProjects\speech-processing-tutorial\DBSCAN\data\processed\GEDEvent_10k_sample.csv")
+    data_path = os.path.join(BASE_DIR, "data", "processed", "GEDEvent_10k_sample.csv")
+    coords = load_and_clean_coordinates(data_path)
     coords_rad = np.radians(coords)
-    k_dist_rad = compute_k_distance(coords_rad,k=5)
-    plot_k_distance_elbow(k_dist_rad,save_path = output_fig_path)
+    k_dist_rad = compute_k_distance(coords_rad, k=10)
+    plot_k_distance_elbow(k_dist_rad, save_path=output_fig_path)

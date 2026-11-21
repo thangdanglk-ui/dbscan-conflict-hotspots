@@ -1,7 +1,7 @@
 import numpy as np
 
 class CustomDBSCAN:
-    def __init__(self,eps,min_samples,metrics = "haversine"):
+    def __init__(self, eps=0.007848, min_samples=10, metrics="haversine"):
         self.eps = eps
         self.min_samples = min_samples
         self.metrics = metrics
@@ -54,7 +54,7 @@ class CustomDBSCAN:
                             queue.append(sn)
                             in_queue.add(sn)
             cluster_id += 1
-        self.core_sample_indices_ = np.array(list(set(core_indices)),dtype = np.int32)
+        self.core_sample_indices_ = np.array(sorted(list(set(core_indices))), dtype=np.int32)
         self.components_ = X[self.core_sample_indices_] \
                 if len(self.core_sample_indices_) > 0 else np.empty((0,X.shape[1]))
         return self
@@ -84,7 +84,15 @@ class CustomDBSCAN:
                 pred_labels[i] = core_labels[min_idx]
         return pred_labels
 if __name__ == "__main__":
-    customDB = CustomDBSCAN(1,3)
-    X = np.stack([np.random.uniform(1,10,13),np.random.uniform(1,10,13)],axis=1)
-    a = customDB._get_neighbors(X,5)
+    # Test nhanh mô hình CustomDBSCAN với dữ liệu mẫu nhỏ
+    toy_X = np.array([
+        [0.0, 0.0],
+        [0.001, 0.001],
+        [0.002, 0.002],
+        [1.0, 1.0]
+    ])
+    model = CustomDBSCAN(eps=0.01, min_samples=2, metrics="haversine")
+    labels = model.fit_predict(toy_X)
+    print(f"Nhãn phân cụm dữ liệu test: {labels}")
+    print(f"Chỉ số điểm lõi: {model.core_sample_indices_}")
 
